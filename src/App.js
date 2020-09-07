@@ -5,24 +5,12 @@ import Person from "./Person/Person";
 class App extends Component {
   state = {
     persons: [
-      { name: "Max", age: 28 },
-      { name: "Manu", age: 29 },
-      { name: "Stephanie", age: 26 },
+      { id: "asda1", name: "Max", age: 28 },
+      { id: "asda11", name: "Manu", age: 29 },
+      { id: "asda112", name: "Stephanie", age: 26 },
     ],
     otherState: "some other value",
     showPersons: false,
-  };
-
-  switchNameHandler = (newName) => {
-    // console.log('Was clicked!');
-    // DON'T DO THIS: this.state.persons[0].name = 'Maximilian';
-    this.setState({
-      persons: [
-        { name: newName, age: 28 },
-        { name: "Manu", age: 29 },
-        { name: "Stephanie", age: 27 },
-      ],
-    });
   };
 
   nameChangedHandler = (event) => {
@@ -40,6 +28,13 @@ class App extends Component {
     this.setState({ showPersons: !doesShow });
   };
 
+  deletePersonHandler = (personIndex) => {
+    //const persons = this.state.persons.slice();
+    const persons = [...this.state.persons];
+    persons.splice(personIndex, 1); //?? why the 1 parameter??
+    this.setState({ persons: persons });
+  };
+
   render() {
     const style = {
       backgroundColor: "white",
@@ -54,8 +49,15 @@ class App extends Component {
     if (this.state.showPersons) {
       persons = (
         <div>
-          {this.state.persons.map((person) => {
-            return <Person name={person.name} age={person.age} />;
+          {this.state.persons.map((person, index) => {
+            return (
+              <Person
+                name={person.name}
+                age={person.age}
+                key={person.id}
+                click={() => this.deletePersonHandler(index)}
+              />
+            );
           })}
         </div>
       );
